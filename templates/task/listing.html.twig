@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les tâches
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+$('#example').DataTable({
+language: {
+processing: "Traitement en cours...",
+search: "Rechercher&nbsp;:",
+lengthMenu: "Afficher _MENU_ &eacute;l&eacute;ments",
+info: "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+infoEmpty: "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+infoFiltered: "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+infoPostFix: "",
+loadingRecords: "Chargement en cours...",
+zeroRecords: "Aucun &eacute;l&eacute;ment &agrave; afficher",
+emptyTable: "Aucune donnée disponible dans le tableau",
+paginate: {
+first: "Premier",
+previous: "Pr&eacute;c&eacute;dent",
+next: "Suivant",
+last: "Dernier"
+},
+aria: {
+sortAscending: ": activer pour trier la colonne par ordre croissant",
+sortDescending: ": activer pour trier la colonne par ordre décroissant"
+}
+}
+});
+});
+	</script>
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+	{% if app.user %}
+		<div class="mb-3">
+			Vous êtes connecté en tant que
+			{{ app.user.username }},
+			<a href="{{ path('app_logout') }}">Déconnexion</a>
+		</div>
+	{% endif %}
+
+	<div class="example-wrapper">
+		<h1>Liste des tâche</h1><br>
+
+		{# router vers la page que l'on veut #}
+		<a href="{{ path('task_create') }}">
+			<button class="btn btn-primary">Ajouter une tâche</button>
+		</a><br>
+
+		<table id="example" class="display" style="width:100%">
+
+			<thead>
+				<tr>
+					<th scope="col">id</th>
+					<th scope="col">Nom</th>
+					<th scope="col">Date effective</th>
+					<th scope="col">Priorité</th>
+					<th scope="col">Categorie</th>
+					{# <th scope="col">Description</th> #}
+				</tr>
+			</thead>
+			<tbody>
+				{% for task in tasks %}
+					<tr>
+						<th>{{ task.getIdTask() }}</th>
+						<td>{{ task.getNameTask() }}</td>
+						<td>{{ task.getCreatedDateTask().format('Y-m-d H:i') }}</td>
+						{# <td>{{ task.getDueDateTask().format('Y-m-d H:i') }}</td> #}
+						<td>{{task.getPriorityTask() }}</td>
+						<td>{{task.getCategory().getLibelleCategory() }}</td>
+						{# <td>{{task.getDescriptionTask() }}</td><br> #}
+						<td>
+							<a href="{{ path('task_editing', {'id': task.getIdTask()} )}}">
+								<button class="btn btn-success">Editer</button>
+							</a>
+						</td>
+						<td>
+							<a href="{{ path('task_delete', {'id': task.getIdTask()} )}}">
+								<button class="btn btn-danger">Supprimer</button>
+							</a>
+						</td>
+
+					</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+
+
+	</div>
+{% endblock %}

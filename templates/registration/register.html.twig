@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
+
+	{% for flashError in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+	{% endfor %}
+
+	<div class="example-wrapper">
+		<h1 class='mb-5'>Enregistrez-vous</h1>
+
+
+		{{ form_start(registrationForm, {'label': 'Nom d\'utilisateur','attr': {'placeholder': 'Entrez votre nom', 'class':'form-control mb-3'}}) }}
+		{{ form_row(registrationForm.username, {'label': 'Nom d\'utilisateur','attr': {'placeholder': 'Entrez votre nom', 'class':'form-control mb-3'}}) }}
+		{{ form_row(registrationForm.plainPassword, {'label': 'Mot de passe','attr': {'placeholder': 'Entrez votre mot de passe', 'class':'form-control mb-3'}}) }}
+		{{ form_row(registrationForm.agreeTerms, { label: 'Accepter les termes', 'attr': {'class': "form-check-input ms-3"}}) }}
+
+		<button type="submit" class="btn btn-lg btn-primary mt-3">Register</button>
+		{{ form_end(registrationForm) }}
+	</div>
+
+{% endblock %}
